@@ -13,6 +13,8 @@ class __Painter():
 
         self.pen = False
 
+        self.angle = 0
+
     def off(self):
         self.pen = False
 
@@ -31,6 +33,8 @@ class __Painter():
         else:
             self.x += dx
             self.y -= dy
+    def turn(angle):
+        self.angle += angle
             
    
 __root = Tk()
@@ -44,4 +48,6 @@ def move(dx, dy):
     __p.move(dx, dy)
 def show():
     __root.mainloop()
+def turn(angle):
+    __p.turn(angle)
 
