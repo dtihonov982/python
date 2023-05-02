@@ -143,5 +143,4 @@ def getHistory(y1, m1, d1, y2, m2, d2, t=std_t):
         
 
 if __name__ == "__main__":
-    #plotYieldCurve(9, 10, 2020)
-    #getYinPeriod(0.5, 2020, 1, 1, 2020, 2, 29)
+    plotYieldCurve(2020, 10, 9)

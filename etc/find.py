@@ -19,11 +19,12 @@ def recursive_search(catalog, pattern):
     except PermissionError:
         print("***Permission error: " + os.getcwd())    
     
-            
-catalog = sys.argv[1]
-pattern = sys.argv[2]
+if len(sys.argv) == 3:        
+    recursive_search(sys.argv[1], sys.argv[2])
+else:
+    print("find [where] [what]")
 
-recursive_search(catalog, pattern)
+
 
 
 
