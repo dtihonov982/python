@@ -14,7 +14,7 @@ root.minsize(width=W, height=H)
 c = Canvas(root, width=W, height=H, bg='white')
 c.pack()
 
-camera = Camera(z=-2, k=2, scale=100, width=W, height=H)
+camera = Camera(z=-2, k=2, scale=200, width=W, height=H, Ry=0.1, Rx=0.1)
 
 view = camera.getView(cube)
 

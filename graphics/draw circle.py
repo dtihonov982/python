@@ -2,7 +2,7 @@ import graphics
 
 from tkinter import *
 
-circle = graphics.generate_circle(1, 30)
+circle = graphics.generate_circle(1, 10)
 
 W = 200
 H = 200

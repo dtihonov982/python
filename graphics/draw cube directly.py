@@ -4,8 +4,8 @@ from graphics import *
 
 cube = load_edges('cube.csv')
 
-W = 200
-H = 200
+W = 400
+H = 300
 s = 100
 
 root = Tk()
@@ -32,6 +32,7 @@ cube = scaleEdges(cube, s)
 printNodes(cube)
 
 cube = transferEdges(cube, dx=-dx, dy=-dy)
+cube = rotateEdges(cube, Rx=0.2, Rz=0.2)
 
 
 
