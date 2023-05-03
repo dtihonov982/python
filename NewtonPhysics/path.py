@@ -48,6 +48,7 @@ class Path2:
             if self.len() > self.max:
                 canvas.delete(self.list[0][4])
                 del self.list[0]
+                
 class Path3:
     def __init__(self, color='blue'):
         self.last = []
