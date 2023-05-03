@@ -1,11 +1,8 @@
-import reading
-import geometry
-import draw
 from tkinter import *
 from math import radians
-from geometry import *
+from graphics import *
 
-cube = reading.load_edges('Oxy.csv')
+cube = load_edges('Oxy.csv')
 
 W = 500
 H = 500
@@ -74,7 +71,7 @@ def main_cycle():
         
     c.delete('all')
     view = camera.getView(cube)
-    draw.draw(c, view)    
+    draw(c, view)    
     root.after(timeout, main_cycle)
     
 root.after(0, main_cycle)

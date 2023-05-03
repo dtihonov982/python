@@ -1,11 +1,8 @@
-import reading
-import geometry
-import draw
 from tkinter import *
 from math import radians
-from geometry import *
+from graphics import *
 
-cube = reading.load_edges('cube.csv')
+cube = load_edges('cube.csv')
 
 W = 500
 H = 500
@@ -21,7 +18,7 @@ camera = Camera(z=-2, k=2, scale=100, width=W, height=H)
 
 view = camera.getView(cube)
 
-draw.draw(c, view)
+draw(c, view)
 
 
 def main_cycle():

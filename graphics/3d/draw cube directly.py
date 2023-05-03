@@ -1,11 +1,8 @@
-import reading
-import geometry
-import draw
 from tkinter import *
 from math import radians
-from geometry import *
+from graphics import *
 
-cube = reading.load_edges('cube.csv')
+cube = load_edges('cube.csv')
 
 W = 200
 H = 200
@@ -38,6 +35,6 @@ cube = transferEdges(cube, dx=-dx, dy=-dy)
 
 
 
-draw.draw(c, cube)
+draw(c, cube)
  
 root.mainloop() 
