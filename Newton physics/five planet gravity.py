@@ -7,6 +7,7 @@ import numpy as np
 from numpy.linalg import norm
 from itertools import combinations
 import time
+from path import *
 
 g = 9.8
 H = 500.0
