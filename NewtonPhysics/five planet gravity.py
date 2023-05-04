@@ -3,9 +3,8 @@
  
 from tkinter import Tk
 
-from path import *
-from body import *
-from application import *
+from physics.body import *
+from physics.application import *
     
  
 if __name__ == '__main__':

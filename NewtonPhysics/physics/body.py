@@ -1,4 +1,4 @@
-from path import Path2, Path3
+from physics.path import Path
 from math import sin, cos, pi, sqrt, atan
 
 import numpy as np
@@ -20,7 +20,7 @@ class Body:
         
         self.color = color
         #trace
-        self.path = Path2()
+        self.path = Path(x, y)
 
     #draws circle
     def draw(self, canvas):
@@ -32,19 +32,22 @@ class Body:
             fill = self.color,
             outline='')
         
+    #Изменение координат    
     def move(self, dt):
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
         self.vx = self.vx + self.ax * dt
         self.vy = self.vy + self.ay * dt
-        
+
+    #Перемещение на холсте    
     def move_pic(self, canvas):
         canvas.coords(self.id,
                       self.x-self.r,
                       self.y-self.r,
                       self.x+self.r,
                       self.y+self.r)
-    
+
+    #Обновление трассы
     def do_path(self, canvas):
         self.path.step_on(self.x, self.y, canvas)
         

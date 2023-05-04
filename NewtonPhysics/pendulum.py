@@ -3,6 +3,7 @@
  
 from tkinter import Tk, Canvas, Frame, BOTH
 from math import sin, cos, pi
+from physics.path import Path
 
 g = 9.8
 H = 300
@@ -14,20 +15,6 @@ fps = 60
 dt_mls = int(1000.0/fps)
 dt = dt_mls/1000.0
 
-class Path:
-    def __init__(self):
-        self.max = 50
-        self.list = []
-    def add(self, x, y):
-        self.list.append((x, y))
-        if len(self.list) > self.max:
-            del self.list[0]
-    def draw(self, canvas, colour='red'):
-        for i in range(0, len(self.list)-1):
-            p1 = self.list[i]
-            p2 = self.list[i+1]
-            canvas.create_line(*p1, *p2, fill=colour)
-        
 class Pendulum:
     def __init__(self, x=0, y=0, L=150, R=10, a=pi/4, w=0):
         self.x = x
@@ -72,18 +59,16 @@ class Example(Frame):
         self.p = Pendulum(xc, yc/3)
         self.p.draw(self.canvas)
 
-        self.path = Path()
-        self.path.add(self.p.x1, self.p.y1)
+        self.path = Path(self.p.x1, self.p.y1, max_len=200)
         
         self.canvas.pack(fill=BOTH, expand=1)
         self.timer()
     
     def timer(self):
         self.p.move(dt)
-        self.path.add(self.p.x1, self.p.y1)
         self.canvas.delete('all')
         self.p.draw(self.canvas)
-        self.path.draw(self.canvas)
+        self.path.step_on(self.p.x1, self.p.y1, self.canvas)
         self.canvas.after(dt_mls, self.timer)
  
 if __name__ == '__main__':
