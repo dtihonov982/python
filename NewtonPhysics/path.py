@@ -1,5 +1,3 @@
-
-
 class Path:
     def __init__(self):
         self.max = 100

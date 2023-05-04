@@ -3,8 +3,6 @@ from math import sin, cos, pi, sqrt, atan
 
 import numpy as np
 
-
-
 class Body:
     def __init__(self, x=0, y=0, vx=0, vy=0, m=1, r=10, color='green'):
         self.x = x

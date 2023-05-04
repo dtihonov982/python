@@ -14,14 +14,15 @@ def curr_time():
 
 class App(Frame):
   
-    def __init__(self, parent, bodies=[], width = 800.0, height = 500.0, dt_calc = 1/60):
+    def __init__(self, parent, bodies=[], width = 800.0, height = 500.0, dt_calc = 1/60, fps = 25):
         Frame.__init__(self, parent)   
         self.parent = parent     
         self.canvas = Canvas(self)
 
-        self.height = 500.0
-        self.width = 800.0
-
+        self.height = height
+        self.width = width
+        #частота обновления экрана
+        self.dt_mls = int(1000.0/fps) 
         
         self.bodies = bodies
         self.combs = list(combinations(self.bodies, 2))
@@ -39,8 +40,6 @@ class App(Frame):
     def initUI(self):
         self.parent.title("Lines")        
         self.pack(fill=BOTH, expand=1)
-        #частота обновления экрана
-        self.dt_mls = int(1000.0/25) 
         
         self.monitor.place(x=self.width-100, y = 0)
         
