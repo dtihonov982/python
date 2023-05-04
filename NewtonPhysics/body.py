@@ -1,4 +1,4 @@
-from path import Path2
+from path import Path2, Path3
 from math import sin, cos, pi, sqrt, atan
 
 import numpy as np

@@ -2,47 +2,45 @@ from tkinter import *
 from itertools import combinations
 import time
 import numpy as np
+from math import sin, cos, pi, sqrt, atan
 from numpy.linalg import norm
 
-g = 9.8
+g = 9.80665
 H = 500.0
 W = 800.0
 xc = W/2
 yc = H/2
 
+dt_calc = 1/60 #частота пересчёта физики в секундах
+multiplex = 1 #частота обновления положения тел относительно пересчёта физики
 
-dt_calc = 1/60
+#частота обновления экрана
 fps = 25
-dt_mls = int(1000.0/fps)
+dt_mls = int(1000.0/fps) 
 dt = dt_mls/1000.0
 
-up_dt = 250
-
-cps = fps*10
-#dt_calc = 1.0/cps
+up_dt = 250 #частота пересчёта монитора в миллисекундах
 
 G = 10**3
 
 K = 10**3
 
-multiplex = 1
-
-slowdown = 0.0
-
 def curr_time():
     return int(round(time.time() * 1000))
-
-prev_moment = curr_time()
 
 class App(Frame):
   
     def __init__(self, parent, bodies=[]):
         Frame.__init__(self, parent)   
         self.parent = parent     
-        self.canvas = Canvas(self)   
+        self.canvas = Canvas(self)
+        
         self.bodies = bodies
+        self.combs = list(combinations(self.bodies, 2))
+        
         self.monitor_str = StringVar()
         self.monitor = Label(parent, textvariable=self.monitor_str, justify=LEFT)
+        
         self.initUI()
         
     def initUI(self):
@@ -50,61 +48,63 @@ class App(Frame):
         self.pack(fill=BOTH, expand=1)
         
         self.monitor.place(x=W-100, y = 0)
-        #self.monitor.pack()
         
         for b in self.bodies:
             b.draw(self.canvas)
-        
-        self.combs = list(combinations(self.bodies, 2))
-        
+
         self.canvas.pack(fill=BOTH, expand=1)
         
     def start(self):
-        self.calc()
+        #Для расчёта slowdown 
+        self.prev_moment = curr_time()
+        self.slowdown = 0.0
+        
+        self.update()
         self.draw()
         self.update_monitor()
     
-    def calc(self):
-        global prev_moment
-        global slowdown
-        slowdown = ((curr_time()-prev_moment)/(dt_calc*1000)-1)*100
-        prev_moment = curr_time()
+    def update(self):
         
+        #Расчёт slowdown для монитора
+        #slowdown отображает на сколько процентов реальный пересчет дольше dt_calc
+        self.slowdown = ((curr_time()-self.prev_moment)/(dt_calc*1000)-1)*100
+        self.prev_moment = curr_time()
+
+        #dt_new - квант времени в секундах, передаваемый телу для обновления своих координат в соответствии с ускорением
         dt_new = dt_calc/multiplex
+        #каждые dt_calc секунд физика пересчитывается multiplex раз
         for i in range(0, multiplex):
             for b in self.bodies:
                 b.move(dt_new)
-                self.calculate()
-                self.check()
-        self.canvas.after(int(dt_calc*1000), self.calc)
+                self.update_acceleration()
+                self.check_collision()
+                
+        self.canvas.after(int(dt_calc*1000), self.update)
     
     def draw(self):
-        for b in self.bodies:
-            b.move_pic(self.canvas)
-            b.do_path(self.canvas)         
+        for body in self.bodies:
+            body.move_pic(self.canvas)
+            body.do_path(self.canvas)
+            
         self.canvas.after(dt_mls, self.draw)
         
     
     def update_monitor(self):
-        #global prev_moment
-        #slowdown = ((curr_time()-prev_moment)/up_dt-1)*100
-        #prev_moment = curr_time()
-
-        pool = []
-        k = 1
+        lines = []
+        body_number = 1
         
         for b in self.bodies:
-            curr = 'v{}: {:.1f}'.format(k, b.get_v())
-            pool.append(curr)
-            k += 1
+            curr_line = 'v{}: {:.1f}'.format(body_number, b.get_v())
+            lines.append(curr_line)
+            body_number += 1
         
-        pool.append('slowdown: {:.1f}'.format(slowdown))
+        lines.append('slowdown: {:.1f}'.format(self.slowdown))
             
-        self.monitor_str.set('\n'.join(pool))
+        self.monitor_str.set('\n'.join(lines))
         self.canvas.after(up_dt, self.update_monitor)
             
         
-    def calculate(self):       
+    def update_acceleration(self):       
         N = len(self.bodies)    
         #Индекса списка
         for i in range(0, N):
@@ -129,7 +129,7 @@ class App(Frame):
                     pass
             p.set_a(total_a)
         
-    def check(self):
+    def check_collision(self):
         for pair in self.combs:
             a = pair[0]
             b = pair[1]

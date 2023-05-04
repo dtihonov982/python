@@ -211,22 +211,6 @@ class Example(Frame):
 if __name__ == '__main__':
     root = Tk()
     
-    #b0 = [
-    #    Body(xc/2, yc, 0, -20), 
-    #    Body(3*xc/2, yc, 0, 20)
-    #    ]
-
-    #Орбита эллиптическая
-    b1 = [
-        Body(xc, yc, 0, 0, 250000, 20),
-        Body(xc-100, yc, 0, -60, 1, 5)
-        ]
-    
-    #Орбита круглая
-    b2 = [
-        Body(xc, yc, 0, 0, 250000, 20, color='red'),
-        Body(xc-100, yc, 0, -50, 1, 5)
-        ]
 
     #Система из 2 тел
     R = 2*W/8
@@ -238,20 +222,14 @@ if __name__ == '__main__':
     m = V**2*r*(1+k)**2/G
     M = V**2*R*(1+k)**2/G
     
-    b3 = [
+    b2 = [
         Body(xc, yc, 0.0, u, M, 20.0),
         Body(xc-R-r, yc, 0.0, -V, m, 5.0)
         ]    
     
-    #3 тела
+ 
     
-    trio = [
-        Body(xc, yc, 0.0, u, M, 20.0),
-        Body(xc-R-r, yc, 0.0, -V, m, 5.0),
-        Body(xc+R, yc, 0.0, V/3, m, 5.0),
-        ]       
-    
-    ex = Example(root, b3)
+    ex = Example(root, b2)
     ex.start()
     root.geometry("{}x{}+100+100".format(int(W), int(H)))
     root.mainloop()  

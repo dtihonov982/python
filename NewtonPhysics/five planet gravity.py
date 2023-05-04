@@ -13,7 +13,7 @@ if __name__ == '__main__':
     
     
     
-    #Скопление
+    #Параметры тел
     m = 300
     r = 5
     vx = 25
@@ -23,7 +23,8 @@ if __name__ == '__main__':
     x = W/2
     y = H/6
     angle = 2*pi/n
-    
+
+    #Размещение тел на плоскости
     for i in range(0, n):
         b5.append(Body(x, y, vx, vy, m, r))
         x, y = rotate(x-xc, y-yc, angle)
