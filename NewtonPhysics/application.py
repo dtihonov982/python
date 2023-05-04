@@ -6,23 +6,7 @@ from math import sin, cos, pi, sqrt, atan
 from numpy.linalg import norm
 
 g = 9.80665
-H = 500.0
-W = 800.0
-xc = W/2
-yc = H/2
-
-dt_calc = 1/60 #частота пересчёта физики в секундах
-multiplex = 1 #частота обновления положения тел относительно пересчёта физики
-
-#частота обновления экрана
-fps = 25
-dt_mls = int(1000.0/fps) 
-dt = dt_mls/1000.0
-
-up_dt = 250 #частота пересчёта монитора в миллисекундах
-
 G = 10**3
-
 K = 10**3
 
 def curr_time():
@@ -30,24 +14,35 @@ def curr_time():
 
 class App(Frame):
   
-    def __init__(self, parent, bodies=[]):
+    def __init__(self, parent, bodies=[], width = 800.0, height = 500.0, dt_calc = 1/60):
         Frame.__init__(self, parent)   
         self.parent = parent     
         self.canvas = Canvas(self)
+
+        self.height = 500.0
+        self.width = 800.0
+
         
         self.bodies = bodies
         self.combs = list(combinations(self.bodies, 2))
+
+        self.dt_calc = dt_calc #частота пересчёта физики в секундах
+        self.multiplex = 1 #частота обновления положения тел относительно пересчёта физики
         
         self.monitor_str = StringVar()
         self.monitor = Label(parent, textvariable=self.monitor_str, justify=LEFT)
+        self.monitor_dt = 250 #частота пересчёта монитора в миллисекундах
+        
         
         self.initUI()
         
     def initUI(self):
         self.parent.title("Lines")        
         self.pack(fill=BOTH, expand=1)
+        #частота обновления экрана
+        self.dt_mls = int(1000.0/25) 
         
-        self.monitor.place(x=W-100, y = 0)
+        self.monitor.place(x=self.width-100, y = 0)
         
         for b in self.bodies:
             b.draw(self.canvas)
@@ -67,26 +62,26 @@ class App(Frame):
         
         #Расчёт slowdown для монитора
         #slowdown отображает на сколько процентов реальный пересчет дольше dt_calc
-        self.slowdown = ((curr_time()-self.prev_moment)/(dt_calc*1000)-1)*100
+        self.slowdown = ((curr_time()-self.prev_moment)/(self.dt_calc*1000)-1)*100
         self.prev_moment = curr_time()
 
         #dt_new - квант времени в секундах, передаваемый телу для обновления своих координат в соответствии с ускорением
-        dt_new = dt_calc/multiplex
+        dt_new = self.dt_calc/self.multiplex
         #каждые dt_calc секунд физика пересчитывается multiplex раз
-        for i in range(0, multiplex):
+        for i in range(0, self.multiplex):
             for b in self.bodies:
                 b.move(dt_new)
                 self.update_acceleration()
                 self.check_collision()
                 
-        self.canvas.after(int(dt_calc*1000), self.update)
+        self.canvas.after(int(self.dt_calc*1000), self.update)
     
     def draw(self):
         for body in self.bodies:
             body.move_pic(self.canvas)
             body.do_path(self.canvas)
             
-        self.canvas.after(dt_mls, self.draw)
+        self.canvas.after(self.dt_mls, self.draw)
         
     
     def update_monitor(self):
@@ -101,7 +96,7 @@ class App(Frame):
         lines.append('slowdown: {:.1f}'.format(self.slowdown))
             
         self.monitor_str.set('\n'.join(lines))
-        self.canvas.after(up_dt, self.update_monitor)
+        self.canvas.after(self.monitor_dt, self.update_monitor)
             
         
     def update_acceleration(self):       
