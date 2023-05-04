@@ -11,7 +11,10 @@ from application import *
 if __name__ == '__main__':
     root = Tk()
     
-    
+    H = 500.0
+    W = 800.0
+    xc = W/2
+    yc = H/2
     
     #Параметры тел
     m = 300
@@ -33,7 +36,7 @@ if __name__ == '__main__':
         y += yc
 
     
-    ex = App(root, b5)
+    ex = App(root, b5, W, H)
     ex.start()
     root.geometry("{}x{}+100+100".format(int(W), int(H)))
     root.mainloop()  
