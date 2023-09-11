@@ -5,12 +5,14 @@ def recursive_search(catalog, pattern):
     prev_catalog = os.getcwd()
     try:
         os.chdir(catalog)
+        cwd = os.getcwd()
         #Получение данных текущего каталога
         files = os.listdir()
         #Вывести результаты поиска в текущем каталоге
         for file_name in files:
             if pattern in file_name:
-                print(os.getcwd() + "\\" + file_name)
+                full_path = os.path.join(cwd, file_name);
+                print(full_path)
         #Для каждого текущего места делаем то же самое   
         for filename in files:
             if os.path.isdir(filename):
