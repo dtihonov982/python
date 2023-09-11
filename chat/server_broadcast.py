@@ -16,11 +16,12 @@ def Reciever(conn, addr):
     while True:
         try:
             data = conn.recv(1024)
-        except ConnectionResetError:
+        except:
             print('Клиент отключен. ' + str(addr))
             conn.close()
             all_conns.remove(conn)    
             return
+             
         message_text = 'Клиент {}:{}> {}'.format(addr[0], addr[1], data.decode())
         broadcast(message_text, conn)
         
@@ -30,6 +31,7 @@ def broadcast(message, sender):
             c.send(message.encode())
     
 while True:            
+    print('Жду подключения...')
     host = sock.accept()
     all_conns.append(host[0])
     

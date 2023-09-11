@@ -7,6 +7,7 @@ from time import sleep
 
 sock = socket.socket()
 
+print('Подключаюсь к серверу...')
 connected = False
 while True:
     try:
@@ -28,10 +29,14 @@ def listening():
         connected = False
         print('Соединение разорвано.')
         return
+    except:
+        connected = False
+        print('Что-то пошло не так.')
+        return
 
 def sending():
     while True:
-        text = input()
+        text = input('> ')
         if connected:
             sock.send(text.encode())
         else:
